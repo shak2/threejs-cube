@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Hello World</title>
+    <style>
+        /* Remove default margins and hide scrollbars to make it full screen */
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Import maps polyfill if needed, but modern browsers support this natively -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com"
+        }
+      }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+
+
+
+
+
+// 1. Create the Scene (the 3D space)
+const scene = new THREE.Scene();
+
+// 2. Create the Camera
+// Parameters: Field of View (75 degrees), Aspect Ratio, Near clipping plane, Far clipping plane
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+// 3. Create the Renderer and append it to the HTML page
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+
+// 4. Create a Box Geometry (Width, Height, Depth)
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+
+// 5. Create a Material (We'll use a basic green color)
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+
+// 6. Combine geometry and material into a Mesh
+const cube = new THREE.Mesh(geometry, material);
+
+// 7. Add the cube to our scene
+scene.add(cube);
+
+// 8. Move the camera backward slightly, otherwise it will sit inside the cube
+camera.position.z = 5;
+
+
+// 9. Create the animation loop function
+function animate() {
+    // Request the browser to call animate again on the next frame
+    requestAnimationFrame(animate);
+
+    // Spin the cube slightly on the X and Y axes
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+
+    // Render the updated scene from the perspective of our camera
+    renderer.render(scene, camera);
+}
+
+// 10. Start the animation
+animate();
+
+window.addEventListener('resize', () => {
+    // Update camera aspect ratio
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    // Update renderer size
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+
+
+    </script>
+</body>
+</html>
